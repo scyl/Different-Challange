@@ -104,6 +104,20 @@ var Lease = (function() {
     return null;
   }
 
+  // function dataArrayToArray(data) {
+  //   let array = [];
+  //
+  //   for (i in data) {
+  //     array.push([data[i].paymentFrom, data[i].paymentTo, data[i].paymentPeriod, data[i].paymentAmount]);
+  //   }
+  //
+  //   return array;
+  // }
+
+  return Lease;
+})();
+
+var Data = function() {
   function Data(from, to, rent) {
     this.paymentFrom = from.toString();
     this.paymentTo = to.toString();
@@ -111,15 +125,11 @@ var Lease = (function() {
     this.paymentAmount = this.paymentPeriod * (rent/NUM_DAYS_IN_WEEK);
   }
 
-  function dataArrayToArray(data) {
-    let array = [];
+  const NUM_DAYS_IN_WEEK = 7;
 
-    for (i in data) {
-      array.push([data[i].paymentFrom, data[i].paymentTo, data[i].paymentPeriod, data[i].paymentAmount]);
-    }
-
-    return array;
+  Data.prototype.toString = function() {
+    return this.paymentFrom + this.paymentTo + this.paymentPeriod + this.paymentAmount;
   }
 
-  return Lease;
-})();
+  return Data;
+}();
