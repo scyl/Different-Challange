@@ -93,7 +93,6 @@ class Table extends React.Component {
       <table>
         <tbody>
           {this.state.data.map(row => {
-            console.log(row.toString());
             return <Rows key={row.toString()} rowData = {row}/>
           })}
         </tbody>
