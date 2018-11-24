@@ -91,6 +91,14 @@ class Table extends React.Component {
   render() {
     return (
       <table>
+        <thead>
+          <tr>
+            <th>From</th>
+            <th>To</th>
+            <th>Period</th>
+            <th>Amount</th>
+          </tr>
+        </thead>
         <tbody>
           {this.state.data.map(row => {
             return <Rows key={row.toString()} rowData = {row}/>
@@ -112,10 +120,18 @@ class Rows extends React.Component {
   render() {
     return (
       <tr>
-        <td key={"f"+this.state.data.paymentFrom.toString()}>{this.state.data.paymentFrom}</td>
-        <td key={"t"+this.state.data.paymentTo.toString()}>{this.state.data.paymentTo}</td>
-        <td key={"p"+this.state.data.paymentPeriod.toString()}>{this.state.data.paymentPeriod}</td>
-        <td key={"a"+this.state.data.paymentAmount.toString()}>{this.state.data.paymentAmount}</td>
+        <td key={"f"+this.state.data.paymentFrom.toString()}>
+          {this.state.data.paymentFrom}
+        </td>
+        <td key={"t"+this.state.data.paymentTo.toString()}>
+          {this.state.data.paymentTo}
+        </td>
+        <td key={"p"+this.state.data.paymentPeriod.toString()}>
+          {this.state.data.paymentPeriod}
+        </td>
+        <td key={"a"+this.state.data.paymentAmount.toString()}>
+          {this.state.data.paymentAmount}
+        </td>
       </tr>
     );
   }
