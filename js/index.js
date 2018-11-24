@@ -91,24 +91,13 @@ class Table extends React.Component {
   render() {
     return (
       <table>
+        <tbody>
           {this.state.data.map(row => {
-            console.log(row);
-            //<Rows rowData = {row}/>
-            <Test/>
+            return <Rows rowData = {row}/>
           })}
+        </tbody>
       </table>
     );
-  }
-}
-
-class Test extends React.Component {
-  constructor(props) {
-    super(props);
-    console.log("7");
-  }
-
-  render() {
-    return;
   }
 }
 
@@ -118,17 +107,15 @@ class Rows extends React.Component {
     this.state = {
       data: this.props.rowData
     };
-
-    console.log("2");
   }
 
   render() {
     return (
       <tr>
-        <td>{this.state.data.paymentFrom}</td>
-        <td>{this.state.data.paymentTo}</td>
-        <td>{this.state.data.paymentPeriod}</td>
-        <td>{this.state.data.paymentAmount}</td>
+        <td key={"f"+this.state.data.paymentFrom}>{this.state.data.paymentFrom}</td>
+        <td key={"t"+this.state.data.paymentTo}>{this.state.data.paymentTo}</td>
+        <td key={this.state.data.paymentPeriod}>{this.state.data.paymentPeriod}</td>
+        <td key={this.state.data.paymentAmount}>{this.state.data.paymentAmount}</td>
       </tr>
     );
   }
