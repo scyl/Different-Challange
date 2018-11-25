@@ -46,7 +46,6 @@ var Lease = (function() {
     }
 
     return data;
-    //return dataArrayToArray(data);
   }
 
   function getNextPaymentDate(from, paymentDay, frequency, endDate) {
@@ -104,16 +103,6 @@ var Lease = (function() {
     return null;
   }
 
-  // function dataArrayToArray(data) {
-  //   let array = [];
-  //
-  //   for (i in data) {
-  //     array.push([data[i].paymentFrom, data[i].paymentTo, data[i].paymentPeriod, data[i].paymentAmount]);
-  //   }
-  //
-  //   return array;
-  // }
-
   return Lease;
 })();
 
@@ -122,7 +111,7 @@ var Data = function() {
     this.paymentFrom = from.toString();
     this.paymentTo = to.toString();
     this.paymentPeriod = from.getDaysTil(to) + 1;
-    this.paymentAmount = this.paymentPeriod * (rent/NUM_DAYS_IN_WEEK);
+    this.paymentAmount = "$" + (this.paymentPeriod * (rent/NUM_DAYS_IN_WEEK));
   }
 
   const NUM_DAYS_IN_WEEK = 7;

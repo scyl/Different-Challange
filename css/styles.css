@@ -1,0 +1,17 @@
+body {
+  font-family: sans-serif;
+}
+
+th, td {
+  border-bottom: 1px solid #DDD;
+  padding: 5px 10px 5px 10px;
+  text-align: left;
+}
+
+th {
+    background-color: #EEE;
+}
+
+td {
+  font-size: 0.9em;
+}

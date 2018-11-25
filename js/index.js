@@ -95,7 +95,7 @@ class Table extends React.Component {
           <tr>
             <th>From</th>
             <th>To</th>
-            <th>Period</th>
+            <th>Days</th>
             <th>Amount</th>
           </tr>
         </thead>
