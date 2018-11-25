@@ -91,7 +91,7 @@ class LeaseData extends React.Component {
       return (
         <div>
           <Form callback = {this.update}/>
-          <LeaseList/>
+          <LeaseList callback = {this.update}/>
         </div>
       );
     }
@@ -184,7 +184,8 @@ class Form extends React.Component {
     super(props);
 
     this.state = {
-      value: ""
+      value: "",
+      callback: this.props.callback
     };
 
     this.changed = this.changed.bind(this);
@@ -193,7 +194,7 @@ class Form extends React.Component {
 
   submit(event) {
     event.preventDefault()
-    this.props.callback(this.state.value)
+    this.state.callback(this.state.value)
   }
 
   changed(event) {
@@ -234,17 +235,19 @@ class LeaseList extends React.Component {
     super(props);
 
     this.state = {
+      callback: this.props.callback,
       loading: true,
       ready: false,
       list: null,
-      error:null
+      error: null
     };
 
+    this.fetchController = new AbortController();
   }
 
   getLeaseList() {
     let url = "https://hiring-task-api.herokuapp.com/v1/leases/";
-    fetch(url)
+    fetch(url, {signal: this.fetchController.signal})
       .then(res => res.json())
       .then(
       (result) => {
@@ -266,6 +269,15 @@ class LeaseList extends React.Component {
     )
   }
 
+  componentDidMount() {
+    this.getLeaseList();
+  }
+
+  componentWillUnmount() {
+    this.fetchController.abort();
+    console.log("Fetch Aborted");
+  }
+
   render() {
     if (this.state.error) {
       console.log("LIST ERROR");
@@ -275,7 +287,6 @@ class LeaseList extends React.Component {
         </div>);
     } else if (this.state.loading) {
       console.log("List Loading");
-      this.getLeaseList();
       return (
         <div>
           Loading...
@@ -284,10 +295,13 @@ class LeaseList extends React.Component {
       console.log("List Displaying")
       return (
         <div>
+          Tenants:
           <ul>
             {this.state.list.map((item) => {
               console.log(item);
-              return <ListItem key = {item.id} data = {item}/>
+              return (
+                <ListItem key = {item.id} data = {item} callback = {this.state.callback}/>
+              )
             })}
           </ul>
         </div>
@@ -303,12 +317,17 @@ class ListItem extends React.Component {
     super(props);
 
     this.state = {
-      data: this.props.data
+      data: this.props.data,
+      callback: this.props.callback
     };
   }
 
   render() {
-    return <li>{this.state.data.id}</li>;
+    return (
+      <li onClick = {this.state.callback.bind(this, this.state.data.id)}>
+      {this.state.data.tenant}
+      </li>
+    );
   }
 }
 

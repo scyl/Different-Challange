@@ -15,3 +15,12 @@ th {
 td {
   font-size: 0.9em;
 }
+
+li {
+  cursor: pointer;
+  padding: 2px;
+}
+
+form {
+  margin-bottom: 10px;
+}
