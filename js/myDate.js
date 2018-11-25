@@ -24,7 +24,7 @@ var MyDate = (function() {
     return new MyDate(getDateShifted(this.date, numDays).toString());
   }
 
-  MyDate.prototype.getDateNextMonth = function(date) {
+  MyDate.prototype.getDateNextMonth = function() {
     let year = this.date.getFullYear();
     let month = this.date.getMonth()+1;
     let day = this.date.getDate();

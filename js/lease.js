@@ -52,14 +52,14 @@ var Lease = (function() {
     let nextDate = null;
     let paymentDayOfWeek = convertDayOfWeekToNum(paymentDay);
 
-    if (from.getDayOfWeek() === paymentDayOfWeek) {
-      if (frequency === "monthly") {
-        nextDate = from.getDateNextMonth(this.date);
-      } else {
-        nextDate = from.shiftDays(convertFrequencyToNum(frequency));
-      }
+    if (frequency === "monthly") {
+      nextDate = from.getDateNextMonth();
     } else {
-      nextDate = from.shiftDays(from.getDaysTilDayOfWeek(paymentDayOfWeek));
+      if (from.getDayOfWeek() === paymentDayOfWeek) {
+        nextDate = from.shiftDays(convertFrequencyToNum(frequency));
+      } else {
+        nextDate = from.shiftDays(from.getDaysTilDayOfWeek(paymentDayOfWeek));
+      }
     }
 
     if (nextDate.compare(endDate) > 0) {
