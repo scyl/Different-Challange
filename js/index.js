@@ -1,6 +1,19 @@
+/*
+##       ########    ###     ######  ######## ########     ###    ########    ###
+##       ##         ## ##   ##    ## ##       ##     ##   ## ##      ##      ## ##
+##       ##        ##   ##  ##       ##       ##     ##  ##   ##     ##     ##   ##
+##       ######   ##     ##  ######  ######   ##     ## ##     ##    ##    ##     ##
+##       ##       #########       ## ##       ##     ## #########    ##    #########
+##       ##       ##     ## ##    ## ##       ##     ## ##     ##    ##    ##     ##
+######## ######## ##     ##  ######  ######## ########  ##     ##    ##    ##     ##
+*/
+
+
+
 class LeaseData extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       id: null,
       loading: false,
@@ -19,12 +32,12 @@ class LeaseData extends React.Component {
       loading: true,
       ready: false,
       data: null,
-      error:null,
+      error:null
     });
-    this.getNewJson(newID);
+    this.getNewLeaseData(newID);
   }
 
-  getNewJson(id) {
+  getNewLeaseData(id) {
     let url = "https://hiring-task-api.herokuapp.com/v1/leases/"+id;
     fetch(url)
       .then(res => res.json())
@@ -69,16 +82,33 @@ class LeaseData extends React.Component {
       console.log("Displaying")
       return (
         <div>
-        <Form callback = {this.update}/>
-        <Table data = {this.state.data}/>
+          <Form callback = {this.update}/>
+          <Table data = {this.state.data}/>
         </div>
       );
     } else {
       console.log("Waiting")
-      return (<Form callback = {this.update}/>);
+      return (
+        <div>
+          <Form callback = {this.update}/>
+          <LeaseList/>
+        </div>
+      );
     }
   }
 }
+
+/*
+########    ###    ########  ##       ########
+   ##      ## ##   ##     ## ##       ##
+   ##     ##   ##  ##     ## ##       ##
+   ##    ##     ## ########  ##       ######
+   ##    ######### ##     ## ##       ##
+   ##    ##     ## ##     ## ##       ##
+   ##    ##     ## ########  ######## ########
+*/
+
+
 
 class Table extends React.Component {
   constructor(props) {
@@ -100,7 +130,7 @@ class Table extends React.Component {
           </tr>
         </thead>
         <tbody>
-          {this.state.data.map(row => {
+          {this.state.data.map((row) => {
             return <Rows key={row.toString()} rowData = {row}/>
           })}
         </tbody>
@@ -137,6 +167,18 @@ class Rows extends React.Component {
   }
 }
 
+/*
+########  #######  ########  ##     ##
+##       ##     ## ##     ## ###   ###
+##       ##     ## ##     ## #### ####
+######   ##     ## ########  ## ### ##
+##       ##     ## ##   ##   ##     ##
+##       ##     ## ##    ##  ##     ##
+##        #######  ##     ## ##     ##
+*/
+
+
+
 class Form extends React.Component {
   constructor(props) {
     super(props);
@@ -169,9 +211,104 @@ class Form extends React.Component {
             onChange = {this.changed}
           />
         </label>
-        <input type="submit" value="Submit" />
+        <input type="submit" value="Search" />
       </form>
     )
+  }
+}
+
+/*
+##       ########    ###     ######  ######## ##       ####  ######  ########
+##       ##         ## ##   ##    ## ##       ##        ##  ##    ##    ##
+##       ##        ##   ##  ##       ##       ##        ##  ##          ##
+##       ######   ##     ##  ######  ######   ##        ##   ######     ##
+##       ##       #########       ## ##       ##        ##        ##    ##
+##       ##       ##     ## ##    ## ##       ##        ##  ##    ##    ##
+######## ######## ##     ##  ######  ######## ######## ####  ######     ##
+*/
+
+
+
+class LeaseList extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      loading: true,
+      ready: false,
+      list: null,
+      error:null
+    };
+
+  }
+
+  getLeaseList() {
+    let url = "https://hiring-task-api.herokuapp.com/v1/leases/";
+    fetch(url)
+      .then(res => res.json())
+      .then(
+      (result) => {
+        console.log(result);
+        this.setState({
+          loading: false,
+          ready: true,
+          list: result
+        });
+      },
+      (error) => {
+        console.log("Error: " + error.message);
+        this.setState({
+          loading: false,
+          ready: true,
+          error: error
+        });
+      }
+    )
+  }
+
+  render() {
+    if (this.state.error) {
+      console.log("LIST ERROR");
+      return (
+        <div>
+          Error: {this.state.error.message}
+        </div>);
+    } else if (this.state.loading) {
+      console.log("List Loading");
+      this.getLeaseList();
+      return (
+        <div>
+          Loading...
+        </div>);
+    } else if (this.state.ready) {
+      console.log("List Displaying")
+      return (
+        <div>
+          <ul>
+            {this.state.list.map((item) => {
+              console.log(item);
+              return <ListItem key = {item.id} data = {item}/>
+            })}
+          </ul>
+        </div>
+      );
+    } else {
+      console.log("List Waiting");
+    }
+  }
+}
+
+class ListItem extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      data: this.props.data
+    };
+  }
+
+  render() {
+    return <li>{this.state.data.id}</li>;
   }
 }
 
