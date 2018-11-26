@@ -270,7 +270,6 @@ class LeaseList extends React.Component {
       .then(res => res.json())
       .then(
       (result) => {
-        console.log(result);
         this.setState({
           loading: false,
           ready: true,
@@ -321,7 +320,6 @@ class LeaseList extends React.Component {
           Tenants:
           <ul>
             {this.state.list.map((item) => {
-              console.log(item);
               return (
                 <ListItem key = {item.id} data = {item} callback = {this.state.callback}/>
               )
