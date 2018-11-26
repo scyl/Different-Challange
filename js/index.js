@@ -74,6 +74,11 @@ class LeaseData extends React.Component {
     )
   }
 
+  // Run tests
+  componentDidMount() {
+    testLeaseDate();
+  }
+
   render() {
     if (this.state.error) {
       // Render for if there is an error

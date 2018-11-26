@@ -24,6 +24,10 @@ var LeaseDate = (function() {
   }
 
   // Get the day of the week of date
+  // Sunday -> 0
+  // Monday -> 1
+  // ...
+  // Saturday -> 6
   LeaseDate.prototype.getDayOfWeek = function() {
     return this.date.getDay();
   }
