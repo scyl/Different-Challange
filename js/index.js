@@ -9,7 +9,7 @@
 */
 
 
-
+// Main ReactJS Component
 class LeaseData extends React.Component {
   constructor(props) {
     super(props);
@@ -25,6 +25,7 @@ class LeaseData extends React.Component {
     this.update = this.update.bind(this);
   }
 
+  // Callback function to load a new lease
   update(newID) {
     newID = encodeURIComponent(newID);
     this.setState({
@@ -37,15 +38,24 @@ class LeaseData extends React.Component {
     this.getNewLeaseData(newID);
   }
 
+  // Load given lease ID
   getNewLeaseData(id) {
     let url = "https://hiring-task-api.herokuapp.com/v1/leases/"+id;
     fetch(url)
       .then(res => res.json())
       .then(
       (result) => {
-        console.log(result);
-        let lease = new Lease(result.id, result.start_date, result.end_date, result.rent, result.payment_day, result.frequency);
+        // Create a Lease object from the JSON result
+        let lease = new Lease(
+          result.id,
+          result.start_date,
+          result.end_date,
+          result.rent,
+          result.payment_day,
+          result.frequency
+        );
         console.log(lease.toString());
+        // Store Lease data into state.data
         this.setState({
           loading: false,
           ready: true,
@@ -53,6 +63,7 @@ class LeaseData extends React.Component {
         });
       },
       (error) => {
+        // If an error occured, store the error
         console.log("Error: " + error.message);
         this.setState({
           loading: false,
@@ -65,35 +76,39 @@ class LeaseData extends React.Component {
 
   render() {
     if (this.state.error) {
-      console.log("ERROR")
+      // Render for if there is an error
       return (
         <div>
           <Form callback = {this.update}/>
           Error: {this.state.error.message}
         </div>);
+
     } else if (this.state.loading) {
-      console.log("Loading")
+      // Render for when lease data is loading
       return (
         <div>
           <Form callback = {this.update}/>
           Loading...
         </div>);
+
     } else if (this.state.ready) {
-      console.log("Displaying")
+      // Render for if we have lease data ready to be displayed
       return (
         <div>
           <Form callback = {this.update}/>
           <Table data = {this.state.data}/>
         </div>
       );
+
     } else {
-      console.log("Waiting")
+      // Render for if we have no lease to display
       return (
         <div>
           <Form callback = {this.update}/>
           <LeaseList callback = {this.update}/>
         </div>
       );
+
     }
   }
 }
@@ -109,7 +124,7 @@ class LeaseData extends React.Component {
 */
 
 
-
+// Table component for displaying a lease data
 class Table extends React.Component {
   constructor(props) {
     super(props);
@@ -139,6 +154,7 @@ class Table extends React.Component {
   }
 }
 
+// Rows component for each row in the table
 class Rows extends React.Component {
   constructor(props) {
     super(props);
@@ -178,7 +194,7 @@ class Rows extends React.Component {
 */
 
 
-
+// Form component for the looking up a specific lease ID
 class Form extends React.Component {
   constructor(props) {
     super(props);
@@ -192,11 +208,13 @@ class Form extends React.Component {
     this.submit = this.submit.bind(this);
   }
 
+  // Handle submission of the form
   submit(event) {
     event.preventDefault()
     this.state.callback(this.state.value)
   }
 
+  // Handle when text is entered
   changed(event) {
     this.setState({value: event.target.value});
   }
@@ -229,7 +247,7 @@ class Form extends React.Component {
 */
 
 
-
+// List component for list of tenants
 class LeaseList extends React.Component {
   constructor(props) {
     super(props);
@@ -245,6 +263,7 @@ class LeaseList extends React.Component {
     this.fetchController = new AbortController();
   }
 
+  // Get the list of tenants from the API
   getLeaseList() {
     let url = "https://hiring-task-api.herokuapp.com/v1/leases/";
     fetch(url, {signal: this.fetchController.signal})
@@ -269,30 +288,34 @@ class LeaseList extends React.Component {
     )
   }
 
+  // When the component is ready
   componentDidMount() {
     this.getLeaseList();
   }
 
+  // When the component is being removed
   componentWillUnmount() {
+    // Cancal the fetch request
     this.fetchController.abort();
-    console.log("Fetch Aborted");
   }
 
   render() {
     if (this.state.error) {
-      console.log("LIST ERROR");
+      // Display if there is an error
       return (
         <div>
           Error: {this.state.error.message}
         </div>);
+
     } else if (this.state.loading) {
-      console.log("List Loading");
+      // Display when list if loading
       return (
         <div>
           Loading...
         </div>);
+
     } else if (this.state.ready) {
-      console.log("List Displaying")
+      // Display the list when it's ready
       return (
         <div>
           Tenants:
@@ -306,7 +329,9 @@ class LeaseList extends React.Component {
           </ul>
         </div>
       );
+
     } else {
+      // It should never go here
       console.log("List Waiting");
     }
   }
@@ -323,7 +348,7 @@ class LeaseList extends React.Component {
 */
 
 
-
+// A component for each tenant in the list
 class ListItem extends React.Component {
   constructor(props) {
     super(props);
@@ -343,5 +368,5 @@ class ListItem extends React.Component {
   }
 }
 
-
+// render the LeaseData in the main element
 ReactDOM.render(<LeaseData />, document.getElementById("main"));

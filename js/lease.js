@@ -1,5 +1,6 @@
+// Object for a single lease
 var Lease = (function() {
-
+  // Constructor
   function Lease(id, startDate, endDate, rent, paymentDay, frequency) {
     this.id = id;
     this.startDate = startDate;
@@ -12,6 +13,7 @@ var Lease = (function() {
   const NUM_DAYS_IN_WEEK = 7;
   const NUM_DAYS_IN_FORTNIGHT = 14;
 
+  // Convert the lease to a string
   Lease.prototype.toString = function() {
     let message = "ID: " + this.id + "\n";
     message = message + "Date: " + this.startDate + " to " + this.endDate + "\n";
@@ -22,9 +24,10 @@ var Lease = (function() {
     return message;
   }
 
+  // Generate an array of all the payments for this lease
   Lease.prototype.paymentData = function() {
-    let start = new MyDate(this.startDate);
-    let end = new MyDate(this.endDate);
+    let start = new LeaseDate(this.startDate);
+    let end = new LeaseDate(this.endDate);
 
     let data = [];
 

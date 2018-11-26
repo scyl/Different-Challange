@@ -1,12 +1,12 @@
-var MyDate = (function() {
-  function MyDate(dateString) {
+var LeaseDate = (function() {
+  function LeaseDate(dateString) {
     this.date = new Date(dateString);
     this.date.setUTCHours(2);
   }
 
   const NUM_MS_IN_DAY = 86400000; //*24*60*60*1000
 
-  MyDate.prototype.toString = function() {
+  LeaseDate.prototype.toString = function() {
     let string = "";
 
     string = string + monthToString(this.date.getUTCMonth()) + ", ";
@@ -16,15 +16,15 @@ var MyDate = (function() {
     return string;
   }
 
-  MyDate.prototype.getDayOfWeek = function() {
+  LeaseDate.prototype.getDayOfWeek = function() {
     return this.date.getDay();
   }
 
-  MyDate.prototype.shiftDays = function(numDays) {
-    return new MyDate(getDateShifted(this.date, numDays).toString());
+  LeaseDate.prototype.shiftDays = function(numDays) {
+    return new LeaseDate(getDateShifted(this.date, numDays).toString());
   }
 
-  MyDate.prototype.getDateNextMonth = function() {
+  LeaseDate.prototype.getDateNextMonth = function() {
     let year = this.date.getFullYear();
     let month = this.date.getMonth()+1;
     let day = this.date.getDate();
@@ -40,15 +40,15 @@ var MyDate = (function() {
     newDate.setUTCDate(day);
     newDate.setUTCHours(2);
 
-    return new MyDate(newDate.toString());
+    return new LeaseDate(newDate.toString());
   }
 
-  MyDate.prototype.getDaysTilDayOfWeek = function(dayOfWeek) {
+  LeaseDate.prototype.getDaysTilDayOfWeek = function(dayOfWeek) {
     // Calculate days between now to next paymentDayOfWeek
     return (dayOfWeek + 7 - this.date.getDay())%7;
   }
 
-  MyDate.prototype.getDaysTil = function(otherDate) {
+  LeaseDate.prototype.getDaysTil = function(otherDate) {
     let date1 = this.date;
     let date2 = otherDate.date;
 
@@ -56,7 +56,7 @@ var MyDate = (function() {
     return msToDays(diff);
   }
 
-  MyDate.prototype.compare = function(otherDate) {
+  LeaseDate.prototype.compare = function(otherDate) {
     let date1 = this.date;
     let date2 = otherDate.date;
 
@@ -109,5 +109,5 @@ var MyDate = (function() {
     return dayString;
   }
 
-  return MyDate;
+  return LeaseDate;
 })();
