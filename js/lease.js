@@ -12,6 +12,7 @@ var Lease = (function() {
 
   const NUM_DAYS_IN_WEEK = 7;
   const NUM_DAYS_IN_FORTNIGHT = 14;
+  const NUM_DAYS_IN_MONTHLY = 28;
 
   // Convert the lease to a string
   Lease.prototype.toString = function() {
@@ -66,22 +67,16 @@ var Lease = (function() {
     let nextDate = null;
     let paymentDayOfWeek = convertDayOfWeekToNum(paymentDay);
 
-    if (frequency === "monthly") {
-      // If the frequency of the payment is monthly
-      // The next payment date is the same date in the next month
-      nextDate = from.getDateNextMonth();
+    if (from.getDayOfWeek() === paymentDayOfWeek) {
+      // If the current payment is on the target day of the week
+      // Then next payment date is 7(weekly) or 14(fortnightly) or 28(monethly) days later
+      nextDate = from.shiftDays(convertFrequencyToNum(frequency));
     } else {
-      // If the frequency is weekly or fortnightly
-      if (from.getDayOfWeek() === paymentDayOfWeek) {
-        // If the current payment is on the target day of the weekly
-        // Then next payment date is 7(weekly) or 14(fortnightly) days later
-        nextDate = from.shiftDays(convertFrequencyToNum(frequency));
-      } else {
-        // If the current payment is NOT on the target day of the weekly
-        // Then next payment date is the number of days until that day of the week
-        nextDate = from.shiftDays(from.getDaysTilDayOfWeek(paymentDayOfWeek));
-      }
+      // If the current payment is NOT on the target day of the weekly
+      // Then next payment date is the number of days until that day of the week
+      nextDate = from.shiftDays(from.getDaysTilDayOfWeek(paymentDayOfWeek));
     }
+
 
     // If the next payment is after the end of the lease
     if (nextDate.compare(endDate) > 0) {
@@ -126,9 +121,15 @@ var Lease = (function() {
     if (frequency === "weekly") {
       return NUM_DAYS_IN_WEEK;
     }
+
     if (frequency === "fortnightly") {
       return NUM_DAYS_IN_FORTNIGHT;
     }
+
+    if (frequency === "monthly") {
+      return NUM_DAYS_IN_MONTHLY;
+    }
+
     return null;
   }
 
@@ -141,13 +142,23 @@ var Data = function() {
     this.paymentFrom   = from.toString();
     this.paymentTo     = to.toString();
     this.paymentPeriod = from.getDaysTil(to) + 1;
-    this.paymentAmount = "$" + (this.paymentPeriod * (rent/NUM_DAYS_IN_WEEK));
+    this.paymentAmount = "$" + calPaymentAmount(rent, this.paymentPeriod);
   }
 
   const NUM_DAYS_IN_WEEK = 7;
 
   Data.prototype.toString = function() {
     return this.paymentFrom + this.paymentTo + this.paymentPeriod + this.paymentAmount;
+  }
+
+  // Calculate the amount in the payment
+  function calPaymentAmount(rent, period) {
+    return roundToOneDecimal(period * (rent/NUM_DAYS_IN_WEEK));
+  }
+
+  // Round given number to one decimal place
+  function roundToOneDecimal(num) {
+    return Math.round(num * 10) / 10;
   }
 
   return Data;

@@ -2,7 +2,6 @@ function testLeaseDate() {
   testLeaseDateCreation();
   testLeaseDateGetDayOfWeek();
   testLeaseDateShiftDays();
-  testLeaseDateGetDateNextMonth();
   testLeaseDateGetDaysTilDayOfWeek();
   testLeaseDateGetDaysTil();
   testLeaseDateCompare();
@@ -164,52 +163,6 @@ function testLeaseDateShiftDays() {
   leaseDate = new LeaseDate(date);
   if (leaseDate.shiftDays(shift).toString() !== "March, 4th 2001") {
     console.log("FAILED: " + date + "shifted by " + shift);
-  }
-}
-
-function testLeaseDateGetDateNextMonth() {
-  console.log("Testing LeaseDate getDateNextMonth()");
-
-  let date = "2000-08-30";
-  let leaseDate = new LeaseDate(date);
-  if (leaseDate.getDateNextMonth().toString() !== "September, 30th 2000") {
-    console.log("FAILED: " + date);
-  }
-
-  date = "1864-12-31";
-  leaseDate = new LeaseDate(date);
-  if (leaseDate.getDateNextMonth().toString() !== "January, 31st 1865") {
-    console.log("FAILED: " + date);
-  }
-
-  date = "2163-01-31";
-  leaseDate = new LeaseDate(date);
-  if (leaseDate.getDateNextMonth().toString() !== "February, 31st 2163") {
-    console.log("FAILED: " + date);
-  }
-
-  date = "2020-02-02";
-  leaseDate = new LeaseDate(date);
-  if (leaseDate.getDateNextMonth().toString() !== "March, 2nd 2020") {
-    console.log("FAILED: " + date);
-  }
-
-  date = "2132-05-13";
-  leaseDate = new LeaseDate(date);
-  if (leaseDate.getDateNextMonth().toString() !== "June, 13th 2132") {
-    console.log("FAILED: " + date);
-  }
-
-  date = "2018-11-26";
-  leaseDate = new LeaseDate(date);
-  if (leaseDate.getDateNextMonth().toString() !== "December, 26th 2018") {
-    console.log("FAILED: " + date);
-  }
-
-  date = "2016-07-23";
-  leaseDate = new LeaseDate(date);
-  if (leaseDate.getDateNextMonth().toString() !== "August, 23rd 2016") {
-    console.log("FAILED: " + date);
   }
 }
 

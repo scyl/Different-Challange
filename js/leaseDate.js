@@ -37,31 +37,6 @@ var LeaseDate = (function() {
     return new LeaseDate(getDateShifted(this.date, numDays).toString());
   }
 
-  // Get a new LeaseDate that's the same day in the next month
-  LeaseDate.prototype.getDateNextMonth = function() {
-    // Get the year, month and day in the next month
-    let year  = this.date.getFullYear();
-    let month = this.date.getMonth()+1;
-    let day   = this.date.getDate();
-
-    // If the month is after December, wrap around to January
-    // And move to the next year
-    if (month === 12) {
-      month = 0;
-      year++;
-    }
-
-    // Create a new JS date object
-    // And set the year, month and day to the target date
-    let newDate = new Date("2018-01-01");
-    newDate.setUTCFullYear(year);
-    newDate.setUTCMonth(month);
-    newDate.setUTCDate(day);
-    newDate.setUTCHours(2);
-
-    return new LeaseDate(newDate.toString());
-  }
-
   // Get the number of days until the given day of the week
   LeaseDate.prototype.getDaysTilDayOfWeek = function(dayOfWeek) {
     return (dayOfWeek + 7 - this.date.getDay())%7;
